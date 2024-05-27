@@ -1,0 +1,59 @@
+linters-settings:
+  govet:
+    shadow: true # Enable shadowing check
+  gocyclo:
+    min-complexity: 42
+  cyclop:
+    max-complexity: 42
+  maligned:
+    suggest-new: true
+  dupl:
+    threshold: 200
+  revive:
+    rules:
+    - name: var-naming
+      severity: warning
+      disabled: true
+linters:
+  enable-all: true
+  disable:
+    - ireturn
+    - dupl
+    - tagliatelle
+    - exhaustive
+    - interfacebloat
+    - exhaustivestruct
+    - funlen
+    - gci
+    - gochecknoglobals
+    - gocognit
+    - goconst
+    - gocyclo
+    - godot
+    - goerr113
+    - gomnd
+    - lll
+    - nestif
+    - nlreturn
+    - wrapcheck
+    - wsl
+    - nakedret
+    - paralleltest
+    - testpackage
+    - varnamelen
+    - nosnakecase
+    - exhaustruct
+    - nonamedreturns
+    - forcetypeassert
+    - golint #deprecated
+    - varcheck #deprecated
+    - ifshort #deprecated
+    - structcheck #deprecated
+    - maligned #deprecated
+    - scopelint #deprecated
+    - interfacer #deprecated
+    - deadcode #deprecated
+    - depguard
+issues:
+  exclude:
+    - "tag is not aligned, should be:" # this is harder to read

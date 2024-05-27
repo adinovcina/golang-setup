@@ -1,0 +1,28 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+#configuration
+.env
+
+#local-data
+data
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+kube/config/
+kube/.kube/
+config/id_rsa
+debug
+.vscode
+.vs/
+.DS_Store
+coverage.txt
+TODO

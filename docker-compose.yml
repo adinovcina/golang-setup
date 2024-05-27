@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  # NOTE: Uncomment once you want to use the service through the Docker compose
+  service:
+    build:
+      context: .
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    env_file:
+      - .env
+    environment:
+      - PORT=${SERVICE_PORT}
+      - ENVIRONMENT=${SERVICE_ENVIRONMENT}
+      - DATABASE_ADDRESS=mysql
+      - REDIS_ADDRESS=redis:6379
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${SERVICE_PORT}/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # MySQL Database
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+    ports:
+      - "3307:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "mysql", "-u${DATABASE_USERNAME}", "-p${DATABASE_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_HOST=${REDIS_ADDRESS}
+      - REDIS_DB=${REDIS_DATABASE}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_SECRET_KEY=${REDIS_SECRET_KEY}
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql_data:
+  redis:
